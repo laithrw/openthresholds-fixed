@@ -97,7 +97,8 @@ class Contents extends Component {
         this.state = {
             currentPosition: 0,
             isSplitScreen: false,
-            splitScreenDirection: null, // Add this to track split screen direction
+            splitScreenDirection: null, // Track split screen direction
+            previousPosition: null,  // Track the previous position
         };
     }
 
@@ -169,27 +170,45 @@ class Contents extends Component {
 
     navigatePage(direction) {
         const navigation = this.props.navigation;
-        let newIndex = this.state.currentPosition;
 
         if (this.state.isSplitScreen) {
-            // If already in split-screen mode, move to the next/previous page fully
-            newIndex = direction === 'next' ? 
-                (this.state.currentPosition + 1) % navigation.length :
-                (this.state.currentPosition - 1 + navigation.length) % navigation.length;
+            if (direction === this.state.splitScreenDirection) {
+                // Complete the navigation
+                let newIndex = direction === 'next' 
+                    ? (this.state.currentPosition + 1) % navigation.length
+                    : (this.state.currentPosition - 1 + navigation.length) % navigation.length;
+                
+                this.setState({ 
+                    currentPosition: newIndex, 
+                    isSplitScreen: false, 
+                    splitScreenDirection: null,
+                    previousPosition: null
+                }, () => {
+                    this.updateSpreadPosition();
+                    window.location.hash = '#' + this.getCurrentSlug();
+                });
+            } else {
+                // Go back to the original page
+                this.setState({ 
+                    currentPosition: this.state.previousPosition, 
+                    isSplitScreen: false, 
+                    splitScreenDirection: null,
+                    previousPosition: null
+                }, () => {
+                    this.updateSpreadPosition();
+                    window.location.hash = '#' + this.getCurrentSlug();
+                });
+            }
+        } else {
+            // Enter split-screen mode
+            let nextIndex = direction === 'next'
+                ? (this.state.currentPosition + 1) % navigation.length
+                : (this.state.currentPosition - 1 + navigation.length) % navigation.length;
             
             this.setState({ 
-                currentPosition: newIndex, 
-                isSplitScreen: false, 
-                splitScreenDirection: null 
-            }, () => {
-                this.updateSpreadPosition();
-                window.location.hash = '#' + this.getCurrentSlug();
-            });
-        } else {
-            // If not in split-screen mode, enter split-screen mode
-            this.setState({ 
                 isSplitScreen: true, 
-                splitScreenDirection: direction 
+                splitScreenDirection: direction,
+                previousPosition: this.state.currentPosition
             }, () => {
                 this.updateSpreadPosition();
             });
