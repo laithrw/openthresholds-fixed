@@ -97,6 +97,7 @@ class Contents extends Component {
         this.state = {
             currentPosition: 0,
             isSplitScreen: false,
+            splitScreenDirection: null, // Add this to track split screen direction
         };
     }
 
@@ -111,14 +112,42 @@ class Contents extends Component {
             spread.style.height = wh + "px";
         }
 
+        // Check if there's a hash in the URL
         let reloaded_slug = window.location.hash.replace("#","");
-        const position = this.props.navigation.indexOf(reloaded_slug);
-        this.setState({ currentPosition: position >= 0 ? position : 0 });
-        this.updateSpreadPosition();
+        let position = 0;
+
+        if (reloaded_slug) {
+            position = this.props.navigation.indexOf(reloaded_slug);
+            position = position >= 0 ? position : 0;
+        } else {
+            // If no hash, find the position of "A Commonplace Book for Uncommon Times"
+            const firstPageSlug = this.props.navigation.find(slug => {
+                const page = this.props.table_of_contents.issues
+                    .find(issue => issue.slug === this.props.slug)
+                    .articles.find(article => article.slug === slug);
+                return page && page.title === "A Commonplace Book for Uncommon Times";
+            });
+            position = this.props.navigation.indexOf(firstPageSlug);
+            position = position >= 0 ? position : 0;
+        }
+
+        this.setState({ currentPosition: position }, () => {
+            this.updateSpreadPosition();
+            window.location.hash = '#' + this.getCurrentSlug();
+        });
     }
 
     updateSpreadPosition() {
-        const left = -(this.state.currentPosition * 100 + (this.state.isSplitScreen ? 50 : 0));
+        let left;
+        if (this.state.isSplitScreen) {
+            if (this.state.splitScreenDirection === 'next') {
+                left = -(this.state.currentPosition * 100 + 50);
+            } else {
+                left = -(this.state.currentPosition * 100 - 50);
+            }
+        } else {
+            left = -(this.state.currentPosition * 100);
+        }
         document.getElementsByClassName("spreads")[0].style.left = left + "%";
         this.updateActiveNavItem();
     }
@@ -143,18 +172,25 @@ class Contents extends Component {
         let newIndex = this.state.currentPosition;
 
         if (this.state.isSplitScreen) {
-            // If in split-screen mode, move to the next/previous page fully
+            // If already in split-screen mode, move to the next/previous page fully
             newIndex = direction === 'next' ? 
                 (this.state.currentPosition + 1) % navigation.length :
                 (this.state.currentPosition - 1 + navigation.length) % navigation.length;
             
-            this.setState({ currentPosition: newIndex, isSplitScreen: false }, () => {
+            this.setState({ 
+                currentPosition: newIndex, 
+                isSplitScreen: false, 
+                splitScreenDirection: null 
+            }, () => {
                 this.updateSpreadPosition();
                 window.location.hash = '#' + this.getCurrentSlug();
             });
         } else {
             // If not in split-screen mode, enter split-screen mode
-            this.setState({ isSplitScreen: true }, () => {
+            this.setState({ 
+                isSplitScreen: true, 
+                splitScreenDirection: direction 
+            }, () => {
                 this.updateSpreadPosition();
             });
         }
@@ -203,7 +239,7 @@ class Contents extends Component {
                     })}
                 </div>
                 {/* EDIT: MODIFIED THIS. onNavigate prop added to handle navigation from thumbnails and update state. (So thumbnail position and arrows correspond.) */}
-                <IssueNavigation navigation={navigation} spreads={spreads} issue_slug={props.slug} onNavigate={(position, isSplitScreen) => this.setState({ currentPosition: position, isSplitScreen }, this.updateSpreadPosition)}
+                <IssueNavigation navigation={navigation} spreads={spreads} issue_slug={props.slug} onNavigate={(position, isSplitScreen) => this.setState({ currentPosition: position, isSplitScreen, splitScreenDirection: null }, this.updateSpreadPosition)}
                 />
             </>
         );   
