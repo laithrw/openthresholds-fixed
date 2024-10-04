@@ -1,6 +1,5 @@
 import { Component } from 'react'
 
-// EDIT: Simplified NavLink func. Moved click handling to IssueNavigation class.
 function NavLink({page, issue_slug, page_slug, onClick}) {
     return (
         <a onClick={() => onClick(page_slug)}>

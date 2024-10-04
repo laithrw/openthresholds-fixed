@@ -90,20 +90,20 @@ function getCurrentPostion(page_slug, spreads) {
 } 
 
 class Contents extends Component {
-    
-    // EDIT: ADDED THIS. The current position is now stored in state.
     constructor(props) {
         super(props);
         this.state = {
             currentPosition: 0,
             isSplitScreen: false,
-            splitScreenDirection: null, // Track split screen direction
-            previousPosition: null,  // Track the previous position
+            splitScreenDirection: null,
+            previousPosition: null,
         };
+        // Create an array of slugs in the order they appear in articles
+        this.articleOrder = this.props.table_of_contents.issues
+            .find(issue => issue.slug === this.props.slug)
+            .articles.map(article => article.slug);
     }
 
-    // EDIT: MODIFIED THIS AND ADDED FUNCTIONS. Updated to work with the new state-based system.
-    // I added methods like updateSpreadPosition(), updateActiveNavItem(), getCurrentSlug(), and navigatePage() to manage the page navigation.
     componentDidMount() {
         const ws = window.innerWidth;
         const wh = window.innerHeight;
@@ -165,18 +165,16 @@ class Contents extends Component {
     }
 
     getCurrentSlug() {
-        return this.props.navigation[this.state.currentPosition];
+        return this.articleOrder[this.state.currentPosition];
     }
 
     navigatePage(direction) {
-        const navigation = this.props.navigation;
-
         if (this.state.isSplitScreen) {
             if (direction === this.state.splitScreenDirection) {
                 // Complete the navigation
                 let newIndex = direction === 'next' 
-                    ? (this.state.currentPosition + 1) % navigation.length
-                    : (this.state.currentPosition - 1 + navigation.length) % navigation.length;
+                    ? (this.state.currentPosition + 1) % this.articleOrder.length
+                    : (this.state.currentPosition - 1 + this.articleOrder.length) % this.articleOrder.length;
                 
                 this.setState({ 
                     currentPosition: newIndex, 
@@ -202,8 +200,8 @@ class Contents extends Component {
         } else {
             // Enter split-screen mode
             let nextIndex = direction === 'next'
-                ? (this.state.currentPosition + 1) % navigation.length
-                : (this.state.currentPosition - 1 + navigation.length) % navigation.length;
+                ? (this.state.currentPosition + 1) % this.articleOrder.length
+                : (this.state.currentPosition - 1 + this.articleOrder.length) % this.articleOrder.length;
             
             this.setState({ 
                 isSplitScreen: true, 
@@ -221,23 +219,18 @@ class Contents extends Component {
 
         if (!issue) return <></>;
     
-        // EDIT: MODIFIED THIS. The component now uses the navigation prop for ordering, fixing the issue with the arrows navigating in the wrong order.
         const spreads = issue["articles"];
         const navigation = props.navigation;
 
         return (
             <>
                 <div className="turn-pages">
-                    
-                    {/* EDIT: MODIFIED THIS */}
                     <a className="bi bi-chevron-left" onClick={() => this.navigatePage('prev')}></a>
                     <a className="bi bi-chevron-right" onClick={() => this.navigatePage('next')}></a>
-                
                 </div>
 
                 <div className="spreads">
-                    {/* EDIT: MODIFIED THIS */}
-                    {navigation.map((slug, i) => {
+                    {this.articleOrder.map((slug, i) => {
                         const page = spreads.find(spread => spread.slug === slug);
                         const page_left = page.left == null ? null : page.left.file;
                         const page_right = page.right == null ? null : page.right.file;
@@ -257,8 +250,18 @@ class Contents extends Component {
                         );
                     })}
                 </div>
-                {/* EDIT: MODIFIED THIS. onNavigate prop added to handle navigation from thumbnails and update state. (So thumbnail position and arrows correspond.) */}
-                <IssueNavigation navigation={navigation} spreads={spreads} issue_slug={props.slug} onNavigate={(position, isSplitScreen) => this.setState({ currentPosition: position, isSplitScreen, splitScreenDirection: null }, this.updateSpreadPosition)}
+                <IssueNavigation 
+                    navigation={navigation} 
+                    spreads={spreads} 
+                    issue_slug={props.slug} 
+                    onNavigate={(position, isSplitScreen) => {
+                        const newPosition = this.articleOrder.indexOf(navigation[position]);
+                        this.setState({ 
+                            currentPosition: newPosition, 
+                            isSplitScreen, 
+                            splitScreenDirection: null 
+                        }, this.updateSpreadPosition);
+                    }}
                 />
             </>
         );   
