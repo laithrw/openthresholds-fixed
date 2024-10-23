@@ -1,0 +1,321 @@
+title: thresholds
+issues:
+  - slug: paperology
+    title: The Paperology Book
+    navigation:
+      - rouse
+      - moctezuma
+      - anselmo
+      - flint
+      - wilson
+      - corfield
+      - sweeney
+      - stamm
+      - lynch
+      - monger
+      - herzog
+      - brahms
+      - fazli
+      - sylvestre
+      - macleod
+      - cadeau
+      - mari
+      - weichselbraun
+      - drobnick-fisher
+      - iurascu
+      - kunshinski
+    articles:
+      - title: A Commonplace Book for Uncommon Times
+        author: Rebecca Rouse
+        location: Skovde, Sweden
+        from: Montréal
+        to: Vienna
+        thumbnail: rouse-nav.jpg
+        slug: rouse
+        left:
+          file: rouse-left.html
+        right:
+          file: rouse-right.html
+        thumbAddClass:
+            target: rouse
+            className: active
+      - title: A Tiny Book of Stamps
+        author: Anna Weichselbraun
+        location: Vienna, Austria
+        from: Skovde
+        to: Göttingen
+        thumbnail: weichselbraun-nav.jpeg
+        slug: weichselbraun
+        left:
+          file: weichselbraun-left.html
+        right:
+          file: weichselbraun-right.html
+        thumbAddClass:
+            target: weichselbraun
+            className: active
+      - title: In My Coat Pockets
+        author: Sabina Fazli
+        location: Göttingen, Germany
+        from: Vienna
+        to: Berlin
+        thumbnail: fazli-nav.jpg
+        slug: fazli
+        left:
+          file: fazli-left.html
+        right:
+          file: fazli-right.html
+        thumbAddClass:
+            target: fazli
+            className: active
+      - title: Papers for Drawing
+        author: Iris Brahms
+        location: Berlin, Germany
+        from: Göttingen
+        to: Cambridge
+        thumbnail: brahms-nav.jpg
+        slug: brahms
+        left:
+          file: brahms-left.html
+        right:
+          file: brahms-right.html
+        thumbAddClass:
+            target: brahms
+            className: active
+      - title: Table of Lost Contents
+        author: Olin Moctezuma-Burns
+        location: Cambridge, United Kingdom
+        from: Berlin
+        to: Cambridge
+        thumbnail: moctuzema-nav.jpeg
+        slug: moctezuma
+        left:
+          file: moctezuma-left.html
+        right:
+          file: moctezuma-right.html
+        thumbAddClass:
+            target: moctezuma
+            className: active
+      - title: “And I in forme of paper speake to you”
+        author: Georgina Wilson
+        location: Cambridge, United Kingdom
+        from: Cambridge
+        to: Middletown
+        thumbnail: wilson-nav.jpg
+        slug: wilson
+        left: 
+          file: wilson-left.html
+        right:
+          file: wilson-right.html
+        thumbAddClass:
+            target: wilson
+            className: active
+      - title: Wings of the Mayfly
+        author: Mike Sweeney
+        location: Middletown, CT, USA
+        from: Cambridge
+        to: Troy
+        thumbnail: sweeney-nav.jpg
+        slug: sweeney
+        left:
+          file: sweeney-left.html
+        right:
+          file: sweeney-right.html
+        thumbAddClass:
+            target: sweeney
+            className: active
+      - title: Remembering Through ‘Pictures of You’
+        author: Jenifer Monger
+        location: Troy, NY, USA
+        from: Middletown
+        to: New York
+        thumbnail: monger-nav.jpg
+        slug: monger
+        left:
+          file: monger-left.html
+        right:
+          file: monger-right.html
+        thumbAddClass:
+            target: monger
+            className: active
+      - title: Fleeting Thoughts on Ephemerality
+        author: Elana Herzog
+        location: New York City, NY, USA
+        from: Troy
+        to: Sommerville
+        thumbnail: herzog-nav.jpg
+        slug: herzog
+        left:
+          file: herzog-left.html
+        right:
+          file: herzog-right.html
+        thumbAddClass:
+            target: herzog
+            className: active
+      - title: Daedalian Wings, Clipped
+        author: Deidre Lynch
+        location: Sommerville, MA, USA
+        from: New York
+        to: Chicago
+        thumbnail: lynch-nav.jpeg
+        slug: lynch
+        left:
+          file: lynch-left.html
+        right:
+          file: lynch-right.html
+        thumbAddClass:
+          - target: lynch
+            className: active
+      - title: Botanical Silhouettes
+        author: Catriona Macleod
+        location: Chicago, IL, USA
+        from: Sommerville
+        to: East Lansing
+        thumbnail: macleod-nav.jpeg
+        slug: macleod
+        left:
+          file: macleod-left.html
+        right:
+          file: macleod-right.html
+        thumbAddClass:
+            target: macleod
+            className: active
+      - title: On Discoverability
+        author: Michael Stamm
+        location: East Lansing, MI, USA
+        from: Chicago
+        to: Lewisville
+        thumbnail: stamm-nav.jpeg
+        slug: stamm
+        left:
+          file: stamm-left.html
+        right:
+          file: stamm-right.html
+        thumbAddClass:
+            target: stamm
+            className: active
+      - title: Coping Mechanism
+        author: Charmaine Cadeau
+        location: Lewisville, NC, USA
+        from: East Lansing
+        to: Conyers
+        thumbnail: cadeau-nav.jpg
+        slug: cadeau
+        left:
+          file: cadeau-left.html
+        right:
+          file: cadeau-right.html
+        thumbAddClass:
+            target: cadeau
+            className: active
+      - title: Self-portrait (Fall 2021)
+        author: Maureen Flint
+        location: Conyers, GA, USA
+        from: Lewisville
+        to: Baton Rouge
+        thumbnail: flint-nav.jpg
+        slug: flint
+        left:
+          file: flint-left.html
+        right:
+          file: flint-right.html
+        thumbAddClass:
+            target: flint
+            className: active
+      - title: On Newspaper Ephemera and Paper Nostalgia
+        author: Will Mari
+        location: Baton Rouge, LA, USA
+        from: Conyers
+        to: Long Beach
+        thumbnail: mari-nav.jpg
+        slug: mari
+        left:
+          file: mari-left.html
+        right:
+          file:  mari-right.html
+        thumbAddClass:
+            target: mari
+            className: active
+      - title: A Papery State of Mind
+        author: Diana Anselmo
+        location: Long Beach, CA, USA
+        from: Baton Rouge
+        to: Oakland
+        thumbnail: anselmo-nav.jpeg
+        slug: anselmo
+        left:
+          file: anselmo-left.html
+        right:
+          file: anselmo-right.html
+        thumbAddClass:
+            target: anselmo
+            className: active
+      - title: Immersed in Paper
+        author: Christina Corfield
+        location: Oakland, CA, USA
+        from: Long Beach
+        to: Hollywood
+        thumbnail: corfield-nav.jpeg
+        slug: corfield
+        left:
+          file: corfield-left.html
+        right:
+          file: corfield-right.html
+        thumbAddClass:
+            target: corfield
+            className: active
+      - title: The Blue Flower
+        author: Jay Sylvestre
+        location: Hollywood, FL, USA
+        from: Oakland
+        to: Vancouver
+        thumbnail: sylvestre-nav.jpg
+        slug: sylvestre
+        left:
+          file: sylvestre-left.html
+        right:
+          file: sylvestre-right.html
+        thumbAddClass:
+            target: sylvestre
+            className: active
+      - title: Playful Resistance
+        author: Ilinca Iurascu
+        location: Vancouver, BC, Canada
+        from: Oakland
+        to: Toronto
+        thumbnail: iurascu-nav.jpg
+        slug: iurascu
+        left:
+          file: iurascu-left.html
+        right:
+          file: iurascu-right.html
+        thumbAddClass:
+            target: iurascu
+            className: active
+      - title: Kindly Deliver To...
+        author: Jim Drobnick & Jennifer Fisher
+        location: Toronto, ON, Canada
+        from: Vancouver
+        to: Los Angeles
+        thumbnail: drobnick-fisher-nav.jpg
+        slug: drobnick-fisher
+        left:
+          file: drobnick-fisher-left.html
+        right:
+          file: drobnick-fisher-right.html
+        thumbAddClass:
+            target: drobnick-fisher
+            className: active
+      - title: Paper or Textile?
+        author: Alysse Kunshinski
+        location: Los Angeles, CA, USA
+        from: Toronto
+        to: Montréal
+        thumbnail: kunshinski-nav.jpeg
+        slug: kunshinski
+        left:
+          file: kunshinski-left.html
+        right:
+          file: kunshinski-right.html
+        thumbAddClass:
+            target: kunshinski
+            className: active
