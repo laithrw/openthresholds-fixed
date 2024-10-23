@@ -1,5 +1,5 @@
 import { Component, useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import parse from 'html-react-parser'
 import IssueNavigation from './issue_navigation'
 import 'bootstrap-icons/font/bootstrap-icons.scss'
@@ -118,35 +118,26 @@ class Contents extends Component {
             spread.style.height = wh + "px";
         }
 
-        // Initialize position from hash
-        this.handleHashChange();
-    }
+        // Check if there's a hash in the URL
+        let reloaded_slug = window.location.hash.replace("#","");
+        let position = 0;
 
-    componentWillUnmount() {
-        // Remove hash change listener
-        window.removeEventListener('hashchange', this.handleHashChange);
-    }
-
-    handleHashChange() {
-        const hash = window.location.hash.replace('#', '');
-        let position;
-
-        if (hash) {
-            // Find position from hash
-            position = this.props.navigation.indexOf(hash);
+        if (reloaded_slug) {
+            position = this.props.navigation.indexOf(reloaded_slug);
             position = position >= 0 ? position : 0;
         } else {
-            // Default to first article if no hash
-            position = 0;
+            // If no hash, find the position of "A Commonplace Book for Uncommon Times"
+            const firstPageSlug = this.props.navigation.find(slug => {
+                const page = this.props.table_of_contents.issues
+                    .find(issue => issue.slug === this.props.slug)
+                    .articles.find(article => article.slug === slug);
+                return page && page.title === "A Commonplace Book for Uncommon Times";
+            });
+            position = this.props.navigation.indexOf(firstPageSlug);
+            position = position >= 0 ? position : 0;
         }
 
-        // Update state and position
-        this.setState({ 
-            currentPosition: this.articleOrder.indexOf(this.props.navigation[position]),
-            isSplitScreen: false,
-            splitScreenDirection: null,
-            previousPosition: null
-        }, () => {
+        this.setState({ currentPosition: position }, () => {
             this.updateSpreadPosition();
         });
     }
@@ -284,7 +275,16 @@ class Contents extends Component {
 }
 
 export default function Issue(props) {
-    const { slug } = useParams()
+    const { slug, articleSlug } = useParams()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const hash = window.location.hash.replace('#', '')
+        if (hash && !articleSlug) {
+            navigate(`/issue/${slug}/${hash}`, { replace: true })
+        }
+    }, [slug, articleSlug, navigate])
+
     let table_of_contents = undefined
 
     if (!props.table_of_contents) {
@@ -295,13 +295,15 @@ export default function Issue(props) {
         table_of_contents = props.table_of_contents
     }
 
-    // EDIT: ADDED THIS
     const issue = table_of_contents["issues"].find(issue => issue["slug"] === slug)
     if (!issue) return <>Issue not found.</>
 
-    // EDIT: ADDED NAVIGATION PROP
     return (
-        <Contents slug={slug} table_of_contents={table_of_contents} navigation={issue.navigation} 
+        <Contents 
+            slug={slug} 
+            table_of_contents={table_of_contents} 
+            navigation={issue.navigation}
+            articleSlug={articleSlug}  // Add this line
         />
     )
 }
