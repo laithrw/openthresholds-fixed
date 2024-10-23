@@ -23,7 +23,10 @@ export default class IssueNavigation extends Component {
     handleNavClick = (page_slug) => {
         const position = this.props.navigation.indexOf(page_slug);
         document.getElementsByClassName("spreads")[0].style.left = "-" + (position * 100) + "%";
-        window.location.hash = '#' + page_slug;
+        
+        // Use history.pushState instead of directly modifying hash
+        const newUrl = `${window.location.pathname}#${page_slug}`;
+        window.history.pushState(null, '', newUrl);
 
         const thumbnails = document.getElementsByClassName("nav-item");
         for (let thumbnail of thumbnails) {

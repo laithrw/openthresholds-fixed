@@ -98,13 +98,18 @@ class Contents extends Component {
             splitScreenDirection: null,
             previousPosition: null,
         };
-        // Create an array of slugs in the order they appear in articles
         this.articleOrder = this.props.table_of_contents.issues
             .find(issue => issue.slug === this.props.slug)
             .articles.map(article => article.slug);
+
+        // Add hash change listener
+        this.handleHashChange = this.handleHashChange.bind(this);
     }
 
     componentDidMount() {
+        // Add hash change listener
+        window.addEventListener('hashchange', this.handleHashChange);
+        
         const ws = window.innerWidth;
         const wh = window.innerHeight;
         const spread_collection = document.getElementsByClassName("spread");
@@ -113,28 +118,36 @@ class Contents extends Component {
             spread.style.height = wh + "px";
         }
 
-        // Check if there's a hash in the URL
-        let reloaded_slug = window.location.hash.replace("#","");
-        let position = 0;
+        // Initialize position from hash
+        this.handleHashChange();
+    }
 
-        if (reloaded_slug) {
-            position = this.props.navigation.indexOf(reloaded_slug);
+    componentWillUnmount() {
+        // Remove hash change listener
+        window.removeEventListener('hashchange', this.handleHashChange);
+    }
+
+    handleHashChange() {
+        const hash = window.location.hash.replace('#', '');
+        let position;
+
+        if (hash) {
+            // Find position from hash
+            position = this.props.navigation.indexOf(hash);
             position = position >= 0 ? position : 0;
         } else {
-            // If no hash, find the position of "A Commonplace Book for Uncommon Times"
-            const firstPageSlug = this.props.navigation.find(slug => {
-                const page = this.props.table_of_contents.issues
-                    .find(issue => issue.slug === this.props.slug)
-                    .articles.find(article => article.slug === slug);
-                return page && page.title === "A Commonplace Book for Uncommon Times";
-            });
-            position = this.props.navigation.indexOf(firstPageSlug);
-            position = position >= 0 ? position : 0;
+            // Default to first article if no hash
+            position = 0;
         }
 
-        this.setState({ currentPosition: position }, () => {
+        // Update state and position
+        this.setState({ 
+            currentPosition: this.articleOrder.indexOf(this.props.navigation[position]),
+            isSplitScreen: false,
+            splitScreenDirection: null,
+            previousPosition: null
+        }, () => {
             this.updateSpreadPosition();
-            window.location.hash = '#' + this.getCurrentSlug();
         });
     }
 
@@ -171,7 +184,6 @@ class Contents extends Component {
     navigatePage(direction) {
         if (this.state.isSplitScreen) {
             if (direction === this.state.splitScreenDirection) {
-                // Complete the navigation
                 let newIndex = direction === 'next' 
                     ? (this.state.currentPosition + 1) % this.articleOrder.length
                     : (this.state.currentPosition - 1 + this.articleOrder.length) % this.articleOrder.length;
@@ -183,7 +195,10 @@ class Contents extends Component {
                     previousPosition: null
                 }, () => {
                     this.updateSpreadPosition();
-                    window.location.hash = '#' + this.getCurrentSlug();
+                    // Update URL using pushState
+                    const newSlug = this.getCurrentSlug();
+                    const newUrl = `${window.location.pathname}#${newSlug}`;
+                    window.history.pushState(null, '', newUrl);
                 });
             } else {
                 // Go back to the original page
