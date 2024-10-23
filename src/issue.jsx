@@ -113,22 +113,22 @@ class Contents extends Component {
             spread.style.height = wh + "px";
         }
 
-        // Check if there's a hash in the URL
-        let reloaded_slug = window.location.hash.replace("#","");
+        // Get the slug from the URL hash or from the route params
+        let targetSlug = window.location.hash.replace("#","") || this.props.articleSlug;
         let position = 0;
 
-        if (reloaded_slug) {
-            position = this.props.navigation.indexOf(reloaded_slug);
+        if (targetSlug) {
+            position = this.articleOrder.indexOf(targetSlug);
             position = position >= 0 ? position : 0;
         } else {
-            // If no hash, find the position of "A Commonplace Book for Uncommon Times"
-            const firstPageSlug = this.props.navigation.find(slug => {
+            // If no slug, find the position of "A Commonplace Book for Uncommon Times"
+            const firstPageSlug = this.articleOrder.find(slug => {
                 const page = this.props.table_of_contents.issues
                     .find(issue => issue.slug === this.props.slug)
                     .articles.find(article => article.slug === slug);
                 return page && page.title === "A Commonplace Book for Uncommon Times";
             });
-            position = this.props.navigation.indexOf(firstPageSlug);
+            position = this.articleOrder.indexOf(firstPageSlug);
             position = position >= 0 ? position : 0;
         }
 
@@ -269,7 +269,7 @@ class Contents extends Component {
 }
 
 export default function Issue(props) {
-    const { slug } = useParams()
+    const { slug, articleSlug } = useParams()
     let table_of_contents = undefined
 
     if (!props.table_of_contents) {
@@ -280,13 +280,15 @@ export default function Issue(props) {
         table_of_contents = props.table_of_contents
     }
 
-    // EDIT: ADDED THIS
     const issue = table_of_contents["issues"].find(issue => issue["slug"] === slug)
     if (!issue) return <>Issue not found.</>
 
-    // EDIT: ADDED NAVIGATION PROP
     return (
-        <Contents slug={slug} table_of_contents={table_of_contents} navigation={issue.navigation} 
+        <Contents 
+            slug={slug} 
+            table_of_contents={table_of_contents} 
+            navigation={issue.navigation}
+            articleSlug={articleSlug}  // Add this line
         />
     )
 }

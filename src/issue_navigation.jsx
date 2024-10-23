@@ -38,6 +38,9 @@ export default class IssueNavigation extends Component {
         if (this.props.onNavigate) {
             this.props.onNavigate(position, false);
         }
+
+        // Update the URL
+        this.props.navigate(`/issue/${this.props.issue_slug}/${page_slug}`);
     }
 
     render() {

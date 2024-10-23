@@ -15,4 +15,7 @@ export default defineConfig({
 		assetsDir: 'assets',
 		emptyOutDir: true,
 	},
+	server: {
+		historyApiFallback: true,
+	},
 })
