@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import YAML from 'yaml'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Link } from 'react-router-dom'
 import Issue from './issue'
 
 
@@ -49,12 +49,16 @@ export default function App(props) {
 
 	if (!table_of_contents) return <p>Loading, please wait.</p>
 
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<TableOfContents table_of_contents={table_of_contents} />} />
-				<Route path="/issue/:slug" element={<Issue {...props} table_of_contents={table_of_contents} GetYaml={GetYaml} />} />
-			</Routes>
-		</BrowserRouter>
-	)
+	const router = createBrowserRouter([
+		{
+			path: "/",
+			element: <TableOfContents table_of_contents={table_of_contents} />
+		},
+		{
+			path: "/issue/:slug",
+			element: <Issue {...props} table_of_contents={table_of_contents} GetYaml={GetYaml} />
+		}
+	])
+
+	return <RouterProvider router={router} />
 }

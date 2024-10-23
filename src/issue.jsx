@@ -98,10 +98,20 @@ class Contents extends Component {
             splitScreenDirection: null,
             previousPosition: null,
         };
+
         // Create an array of slugs in the order they appear in articles
         this.articleOrder = this.props.table_of_contents.issues
             .find(issue => issue.slug === this.props.slug)
             .articles.map(article => article.slug);
+
+        // Add this to handle initial hash
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+            const position = this.articleOrder.indexOf(hash);
+            if (position !== -1) {
+                this.state.currentPosition = position;
+            }
+        }
     }
 
     componentDidMount() {
@@ -113,44 +123,49 @@ class Contents extends Component {
             spread.style.height = wh + "px";
         }
 
-        // Check if there's a hash in the URL
-        let reloaded_slug = window.location.hash.replace("#","");
-        let position = 0;
+        // Set initial position and update URL
+        this.updateSpreadPosition();
 
-        if (reloaded_slug) {
-            position = this.props.navigation.indexOf(reloaded_slug);
-            position = position >= 0 ? position : 0;
-        } else {
-            // If no hash, find the position of "A Commonplace Book for Uncommon Times"
-            const firstPageSlug = this.props.navigation.find(slug => {
-                const page = this.props.table_of_contents.issues
-                    .find(issue => issue.slug === this.props.slug)
-                    .articles.find(article => article.slug === slug);
-                return page && page.title === "A Commonplace Book for Uncommon Times";
-            });
-            position = this.props.navigation.indexOf(firstPageSlug);
-            position = position >= 0 ? position : 0;
-        }
-
-        this.setState({ currentPosition: position }, () => {
-            this.updateSpreadPosition();
-            window.location.hash = '#' + this.getCurrentSlug();
-        });
+        // Add hash change listener
+        window.addEventListener('hashchange', this.handleHashChange);
     }
 
-    updateSpreadPosition() {
-        let left;
-        if (this.state.isSplitScreen) {
-            if (this.state.splitScreenDirection === 'next') {
-                left = -(this.state.currentPosition * 100 + 50);
-            } else {
-                left = -(this.state.currentPosition * 100 - 50);
-            }
-        } else {
-            left = -(this.state.currentPosition * 100);
+    componentWillUnmount() {
+        // Remove hash change listener
+        window.removeEventListener('hashchange', this.handleHashChange);
+    }
+
+    handleHashChange = () => {
+        const hash = window.location.hash.replace('#', '');
+        const position = this.articleOrder.indexOf(hash);
+        if (position !== -1 && position !== this.state.currentPosition) {
+            this.setState({ currentPosition: position }, () => {
+                this.updateSpreadPosition();
+            });
         }
-        document.getElementsByClassName("spreads")[0].style.left = left + "%";
-        this.updateActiveNavItem();
+    }
+
+    updateSpreadPosition = () => {
+        const position = this.state.currentPosition;
+        const slug = this.getCurrentSlug();
+        
+        // Update the spreads position
+        document.getElementsByClassName("spreads")[0].style.left = "-" + (position * 100) + "%";
+        
+        // Update navigation active state
+        const thumbnails = document.getElementsByClassName("nav-item");
+        for (let thumbnail of thumbnails) {
+            thumbnail.classList.remove('active');
+        }
+        const navItem = document.getElementById("nav-item-" + slug);
+        if (navItem) {
+            navItem.classList.add('active');
+        }
+
+        // Update URL hash without triggering navigation
+        if (window.location.hash !== `#${slug}`) {
+            window.history.replaceState(null, null, `#${slug}`);
+        }
     }
 
     updateActiveNavItem() {
@@ -183,7 +198,6 @@ class Contents extends Component {
                     previousPosition: null
                 }, () => {
                     this.updateSpreadPosition();
-                    window.location.hash = '#' + this.getCurrentSlug();
                 });
             } else {
                 // Go back to the original page
@@ -194,21 +208,19 @@ class Contents extends Component {
                     previousPosition: null
                 }, () => {
                     this.updateSpreadPosition();
-                    window.location.hash = '#' + this.getCurrentSlug();
                 });
             }
         } else {
             // Enter split-screen mode
-            let nextIndex = direction === 'next'
-                ? (this.state.currentPosition + 1) % this.articleOrder.length
-                : (this.state.currentPosition - 1 + this.articleOrder.length) % this.articleOrder.length;
-            
             this.setState({ 
                 isSplitScreen: true, 
                 splitScreenDirection: direction,
                 previousPosition: this.state.currentPosition
             }, () => {
-                this.updateSpreadPosition();
+                // Calculate split screen position
+                const position = this.state.currentPosition;
+                const offset = direction === 'next' ? 50 : -50;
+                document.getElementsByClassName("spreads")[0].style.left = `-${(position * 100) + offset}%`;
             });
         }
     }
