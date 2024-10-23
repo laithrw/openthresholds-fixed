@@ -118,26 +118,35 @@ class Contents extends Component {
             spread.style.height = wh + "px";
         }
 
-        // Check if there's a hash in the URL
-        let reloaded_slug = window.location.hash.replace("#","");
-        let position = 0;
+        // Initialize position from hash
+        this.handleHashChange();
+    }
 
-        if (reloaded_slug) {
-            position = this.props.navigation.indexOf(reloaded_slug);
+    componentWillUnmount() {
+        // Remove hash change listener
+        window.removeEventListener('hashchange', this.handleHashChange);
+    }
+
+    handleHashChange() {
+        const hash = window.location.hash.replace('#', '');
+        let position;
+
+        if (hash) {
+            // Find position from hash
+            position = this.props.navigation.indexOf(hash);
             position = position >= 0 ? position : 0;
         } else {
-            // If no hash, find the position of "A Commonplace Book for Uncommon Times"
-            const firstPageSlug = this.props.navigation.find(slug => {
-                const page = this.props.table_of_contents.issues
-                    .find(issue => issue.slug === this.props.slug)
-                    .articles.find(article => article.slug === slug);
-                return page && page.title === "A Commonplace Book for Uncommon Times";
-            });
-            position = this.props.navigation.indexOf(firstPageSlug);
-            position = position >= 0 ? position : 0;
+            // Default to first article if no hash
+            position = 0;
         }
 
-        this.setState({ currentPosition: position }, () => {
+        // Update state and position
+        this.setState({ 
+            currentPosition: this.articleOrder.indexOf(this.props.navigation[position]),
+            isSplitScreen: false,
+            splitScreenDirection: null,
+            previousPosition: null
+        }, () => {
             this.updateSpreadPosition();
         });
     }
