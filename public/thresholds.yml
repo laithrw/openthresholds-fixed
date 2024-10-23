@@ -37,7 +37,7 @@ issues:
         right:
           file: rouse-right.html
         thumbAddClass:
-            target: rouse
+          - target: rouse
             className: active
       - title: A Tiny Book of Stamps
         author: Anna Weichselbraun
@@ -51,7 +51,7 @@ issues:
         right:
           file: weichselbraun-right.html
         thumbAddClass:
-            target: weichselbraun
+          - target: weichselbraun
             className: active
       - title: In My Coat Pockets
         author: Sabina Fazli
@@ -65,7 +65,7 @@ issues:
         right:
           file: fazli-right.html
         thumbAddClass:
-            target: fazli
+          - target: fazli
             className: active
       - title: Papers for Drawing
         author: Iris Brahms
@@ -79,7 +79,7 @@ issues:
         right:
           file: brahms-right.html
         thumbAddClass:
-            target: brahms
+          - target: brahms
             className: active
       - title: Table of Lost Contents
         author: Olin Moctezuma-Burns
@@ -93,7 +93,7 @@ issues:
         right:
           file: moctezuma-right.html
         thumbAddClass:
-            target: moctezuma
+          - target: moctezuma
             className: active
       - title: “And I in forme of paper speake to you”
         author: Georgina Wilson
@@ -107,7 +107,7 @@ issues:
         right:
           file: wilson-right.html
         thumbAddClass:
-            target: wilson
+          - target: wilson
             className: active
       - title: Wings of the Mayfly
         author: Mike Sweeney
@@ -121,7 +121,7 @@ issues:
         right:
           file: sweeney-right.html
         thumbAddClass:
-            target: sweeney
+          - target: sweeney
             className: active
       - title: Remembering Through ‘Pictures of You’
         author: Jenifer Monger
@@ -135,7 +135,7 @@ issues:
         right:
           file: monger-right.html
         thumbAddClass:
-            target: monger
+          - target: monger
             className: active
       - title: Fleeting Thoughts on Ephemerality
         author: Elana Herzog
@@ -149,7 +149,7 @@ issues:
         right:
           file: herzog-right.html
         thumbAddClass:
-            target: herzog
+          - target: herzog
             className: active
       - title: Daedalian Wings, Clipped
         author: Deidre Lynch
@@ -177,7 +177,7 @@ issues:
         right:
           file: macleod-right.html
         thumbAddClass:
-            target: macleod
+          - target: macleod
             className: active
       - title: On Discoverability
         author: Michael Stamm
@@ -191,8 +191,9 @@ issues:
         right:
           file: stamm-right.html
         thumbAddClass:
-            target: stamm
+          - target: stamm
             className: active
+          - target: macleod
       - title: Coping Mechanism
         author: Charmaine Cadeau
         location: Lewisville, NC, USA
@@ -205,7 +206,7 @@ issues:
         right:
           file: cadeau-right.html
         thumbAddClass:
-            target: cadeau
+          - target: cadeau
             className: active
       - title: Self-portrait (Fall 2021)
         author: Maureen Flint
@@ -219,7 +220,7 @@ issues:
         right:
           file: flint-right.html
         thumbAddClass:
-            target: flint
+          - target: flint
             className: active
       - title: On Newspaper Ephemera and Paper Nostalgia
         author: Will Mari
@@ -233,7 +234,7 @@ issues:
         right:
           file:  mari-right.html
         thumbAddClass:
-            target: mari
+          - target: mari
             className: active
       - title: A Papery State of Mind
         author: Diana Anselmo
@@ -247,7 +248,7 @@ issues:
         right:
           file: anselmo-right.html
         thumbAddClass:
-            target: anselmo
+          - target: anselmo
             className: active
       - title: Immersed in Paper
         author: Christina Corfield
@@ -261,7 +262,7 @@ issues:
         right:
           file: corfield-right.html
         thumbAddClass:
-            target: corfield
+          - target: corfield
             className: active
       - title: The Blue Flower
         author: Jay Sylvestre
@@ -275,7 +276,7 @@ issues:
         right:
           file: sylvestre-right.html
         thumbAddClass:
-            target: sylvestre
+          - target: sylvestre
             className: active
       - title: Playful Resistance
         author: Ilinca Iurascu
@@ -289,7 +290,7 @@ issues:
         right:
           file: iurascu-right.html
         thumbAddClass:
-            target: iurascu
+          - target: iurascu
             className: active
       - title: Kindly Deliver To...
         author: Jim Drobnick & Jennifer Fisher
@@ -303,7 +304,7 @@ issues:
         right:
           file: drobnick-fisher-right.html
         thumbAddClass:
-            target: drobnick-fisher
+          - target: drobnick-fisher
             className: active
       - title: Paper or Textile?
         author: Alysse Kunshinski
@@ -317,5 +318,7 @@ issues:
         right:
           file: kunshinski-right.html
         thumbAddClass:
-            target: kunshinski
+          - target: kunshinski
             className: active
+          - target: drobnick-fisher
+            className: highlight
