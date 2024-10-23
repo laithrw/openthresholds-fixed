@@ -1,5 +1,5 @@
 import { Component, useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import parse from 'html-react-parser'
 import IssueNavigation from './issue_navigation'
 import 'bootstrap-icons/font/bootstrap-icons.scss'
@@ -270,6 +270,15 @@ class Contents extends Component {
 
 export default function Issue(props) {
     const { slug, articleSlug } = useParams()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const hash = window.location.hash.replace('#', '')
+        if (hash && !articleSlug) {
+            navigate(`/issue/${slug}/${hash}`, { replace: true })
+        }
+    }, [slug, articleSlug, navigate])
+
     let table_of_contents = undefined
 
     if (!props.table_of_contents) {
